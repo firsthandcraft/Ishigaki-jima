@@ -1,0 +1,64 @@
+.journal{
+    background-color: #57a5ff;
+    padding-top: 78px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+.journalContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.journalList {
+  list-style: none;
+  display: flex;
+  gap: 16px; /* 각 항목 간의 간격 */
+  padding: 0;
+  margin: 0;
+}
+
+.journalList li {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.journalList li:hover {
+  background-color: #ddd;
+}
+.journalContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.mediaBox {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* 이미지와 영상 크기 조절 및 비율 유지 */
+.mediaBox img,
+.mediaBox video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

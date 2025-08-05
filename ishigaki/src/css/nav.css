@@ -14,3 +14,14 @@
   margin: 0;
 }
 .header ul li{padding: 30px;color:#fff;font-weight: 600;}
+nav li img {
+  width: 60px;      /* 아이콘 크기 조절 */
+  height: 60px;
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+
+nav li img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}

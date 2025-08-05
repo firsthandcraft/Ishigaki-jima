@@ -15,7 +15,7 @@ const P5Sketch = () => {
       };
 
       p.draw = () => {
-        p.background(113, 201, 255)//배경화면
+        p.background(89, 188, 248)//배경화면
         p.orbitControl();// 3D 그리기 코드
         p.lights();
         // 바다 (움직이는 파도)
@@ -27,7 +27,7 @@ const P5Sketch = () => {
             const z = Math.sin(p.frameCount * 0.02 + (x + y) * 0.01) * 10;
             p.push();
             p.translate(x, y, z);
-            p.fill(0, 119, 190);
+            p.fill(0, 119, 255);
             p.plane(50, 50);
             p.pop();
           }
@@ -120,7 +120,7 @@ const P5Sketch = () => {
           style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}
         >
         </div>
-        <h1 class="threeD-text">Ishigaki Island</h1>
+        <h1 className="threeD-text">Ishigaki Island</h1>
       </>
   );
 };
