@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function Journal() {
-  // 예시용 더미 데이터: type(image/video), url(미디어 주소)
   const [items, setItems] = useState([
     { id: 1, type: 'image', url: 'https://via.placeholder.com/300' },
     { id: 2, type: 'video', url: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm' },
