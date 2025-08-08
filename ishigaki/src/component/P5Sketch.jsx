@@ -22,8 +22,8 @@ const P5Sketch = () => {
         waveOffset += 0.05;
         p.push();
         p.rotateX(p.HALF_PI);
-        for (let x =  -1000; x < 1000; x += 50) {
-          for (let y = -500; y < 500; y += 50) {
+        for (let x =  -1300; x < 1300; x += 50) {
+          for (let y = -800; y < 800; y += 50) {
             const z = Math.sin(p.frameCount * 0.02 + (x + y) * 0.01) * 10;
             p.push();
             p.translate(x, y, z);

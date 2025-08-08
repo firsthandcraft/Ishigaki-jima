@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/admin.css';
-
+import Login from './Login';
+import Register from './register';
 function AboutMe() {
   const [title, setTitle] = useState("About Me");
   const [imageFile, setImageFile] = useState(null);
@@ -23,11 +24,13 @@ function AboutMe() {
     formData.append("image", imageFile);
 
     try {
-      const response = await axios.post('/api/aboutme', formData, {
+      console.log("전송할 데이터:", formData);
+      const response = await axios.post('/member/create', formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
+
       alert("저장 완료!");
     } catch (error) {
       console.error("저장 실패:", error);
@@ -37,7 +40,9 @@ function AboutMe() {
 
   return (
     <div className="aboutMeContainer">
-      <h2>{title}</h2>
+      <Login></Login>
+      <Register></Register>
+      {/* <h2>{title}</h2>
 
       {preview ? (
         <img src={preview} alt="미리보기" className="aboutMeImage" />
@@ -58,7 +63,7 @@ function AboutMe() {
           onChange={handleImageChange}
         />
         <button type="submit">저장</button>
-      </form>
+      </form> */}
     </div>
   );
 }
