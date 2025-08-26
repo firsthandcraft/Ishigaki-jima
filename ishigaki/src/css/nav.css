@@ -13,10 +13,11 @@
   padding: 0;
   margin: 0;
 }
-.header ul li{padding: 30px;color:#fff;font-weight: 600;}
+.header ul li{padding: 30px;  width: 60px;
+  height: 60px;color:#fff;font-weight: 600;}
 nav li img {
-  width: 60px;      /* 아이콘 크기 조절 */
-  height: 60px;
+  width: 100%;
+  min-width: 15px;
   object-fit: contain;
   transition: transform 0.3s;
 }

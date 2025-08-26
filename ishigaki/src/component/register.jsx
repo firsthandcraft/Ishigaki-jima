@@ -1,60 +1,70 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../css/admin.css';
+import Login from './Login';
+function AboutMe() {
+  const [title, setTitle] = useState("About Me");
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
-function Register() {
-  const [form, setForm] = useState({
-    username: '',
-    id: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("image", imageFile);
+
     try {
-      await axios.post('/member/create', form);
-      alert('회원가입 성공!');
-    } catch (err) {
-      console.error(err);
-      alert('회원가입 실패!');
+      console.log("전송할 데이터:", formData);
+      const response = await axios.post('/member/create', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      alert("저장 완료!");
+    } catch (error) {
+      console.error("저장 실패:", error);
+      alert("저장 중 오류 발생");
     }
   };
 
   return (
-    <div className="registerContainer">
-      <h2>회원가입</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="aboutMeContainer">
+      {/* <Login></Login> */}
+      {/* <Register></Register> */}
+      {/* <h2>{title}</h2>
+
+      {preview ? (
+        <img src={preview} alt="미리보기" className="aboutMeImage" />
+      ) : (
+        <p>No image selected</p>
+      )}
+
+      <form onSubmit={handleSubmit} className="aboutMeInputs">
         <input
-        className={getInputClass()}
           type="text"
-          name="username"
-          placeholder="사용자 이름"
-          value={form.username}
-          onChange={handleChange}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter title"
         />
         <input
-        className={getInputClass()}
-          type="text"
-          name="id"
-          placeholder="아이디"
-          value={form.id}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          value={form.password}
-          onChange={handleChange}
-        />
-        <button type="submit">가입하기</button>
-      </form>
+        <button type="submit">저장</button>
+      </form> */}
     </div>
   );
 }
 
-export default Register;
+export default AboutMe;
