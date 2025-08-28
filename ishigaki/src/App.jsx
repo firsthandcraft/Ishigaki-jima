@@ -1,34 +1,14 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './css/reset.css';
-import './css/App.css';
-import P5Sketch from './component/P5Sketch';
-import Navigation from './component/Navigation';
-import Title from './component/Title';
-import TripRecord from './component/TripRecord';
-import AboutMe from './component/Aboutme';
-import RegisterTripRecord from './component/RegisterTripRecord';
+import AppContent from './component/AppContent.jsx';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// App 컴포넌트는 오직 BrowserRouter만 렌더링하는 역할입니다.
 function App() {
-  const [count, setCount] = useState(0);
   return (
-    <>
     <BrowserRouter>
-
-      <div className='baseLine'>
-        <Navigation/>
-        <Title></Title>
-          <Routes>
-            <Route path="/" element={<P5Sketch />} />
-            <Route path="/journal" element={<TripRecord />} />
-            <Route path="/aboutme" element={<AboutMe />} />
-            <Route path="/register" element={<RegisterTripRecord />} />
-          </Routes>
-
-      </div>
+      <AppContent />
     </BrowserRouter>
-
-    </>
   );
 }
 

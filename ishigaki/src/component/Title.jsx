@@ -2,7 +2,7 @@ function Title() {
 
     return (
         <div className="title">
-            <div></div>
+            <h1 className="threeD-text">Ishigaki Island</h1>
         </div>
     );
 }

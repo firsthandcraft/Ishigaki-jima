@@ -175,8 +175,7 @@ function RegisterTripRecord() {
 
   return (
     <div className="registerContainer">
-      <h2>게시물</h2>
-      <form className='registerForm' onSubmit={handleSubmit}>
+      <form className='registerForm' >
            {/* 숨겨진 실제 파일 input */}
             <input
               type="file"
@@ -206,10 +205,48 @@ function RegisterTripRecord() {
             </div>
           ))}
         </div>
+   
         <br />
+        <LocalizationProvider dateAdapter={AdapterDateFns} >
+              <TextField
+                label="날짜 선택"
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                InputLabelProps={{
+                  shrink: true, // label이 겹치지 않도록
+                  style: { color: "white" } 
+                }}
+                variant="outlined"
+                inputProps={{
+                  max: today, // 오늘 이후 선택 불가                  
+                  style: { color: "white" } // Sets the input value to white
+                }}
+                sx={{
+                  // 아웃라인(테두리) 색상을 흰색으로 변경
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white",
+                    },
+                    // 호버 시 테두리 색상
+                    "&:hover fieldset": {
+                      borderColor: "white",
+                    },
+                    // 포커스 시 테두리 색상
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white",
+                    },
+                  },
+                  
+                }}
+              />
+          </LocalizationProvider><br /><br />
+       <Button variant="outlined" type="submit" style={{ color: "white", borderColor: "white" }}>등록</Button>
+      </form>
+           <br />
         {/* 편집 캔버스 */}
         {editingIndex !== null && (
-          <div style={{ marginTop: "10px", textAlign:"center" }}>
+          <div style={{ marginTop: "10px", textAlign:"center", position: "relative"}}>
             <p>{brushColor}</p>
             <div style={{ marginBottom: "5px" }}>
               <button onClick={() => setBrushColor("red")} style={{ backgroundColor: "red", width: 30, height: 30, marginRight: 5 }}></button>
@@ -245,24 +282,6 @@ function RegisterTripRecord() {
             </div>
         </div>
         )}
-        <br />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <TextField
-                label="날짜 선택"
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                InputLabelProps={{
-                  shrink: true, // label이 겹치지 않도록
-                }}
-                variant="outlined"
-                inputProps={{
-                  max: today, // 오늘 이후 선택 불가
-                }}
-              />
-          </LocalizationProvider><br /><br />
-       <Button variant="outlined" type="submit">등록</Button>
-      </form>
     </div>
   );
 }

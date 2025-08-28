@@ -1,4 +1,5 @@
-.header{
+/* nav */
+.headerWrap{
   position: absolute;
   top: 0;
   left: 0;
@@ -7,22 +8,60 @@
   align-items: center;
   z-index:1000;
 }
-.header ul{
+.linkWrap{
   display: flex;flex-direction: row;
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.header ul li{padding: 30px;  width: 60px;
+.linkWrap li{padding: 30px;  width: 60px;
   height: 60px;color:#fff;font-weight: 600;}
-nav li img {
+.linkWrap li img {
   width: 100%;
   min-width: 15px;
   object-fit: contain;
   transition: transform 0.3s;
 }
-
-nav li img:hover {
+.linkWrap li img:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
+
+/* sideBar */
+.loginContainer{
+  position: fixed; 
+  top: 0;
+  right: -400px;
+  width: 300px; 
+  height: 100vh; 
+  background-color: #ffffffd8;
+  padding: 60px 20px 20px 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: right 0.5s ease-in-out; 
+  z-index: 999; 
+}
+.loginContainer.active {
+  right: 0; 
+}
+.closeButton {
+  color:#1976d2;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.formContainer h2{
+  color:#1976d2;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+
+
+
+
+

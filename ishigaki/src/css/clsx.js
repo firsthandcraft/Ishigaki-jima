@@ -1,3 +1,4 @@
+// Tailwind CSS 도우미 함수 
 export function getInputClass() {
   return [
     "px-4 py-3 rounded-md border border-blue-300",
