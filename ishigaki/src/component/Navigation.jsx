@@ -34,7 +34,7 @@ function Navigation() {
    // 컴포넌트 마운트 시 로컬 스토리지에서 로그인 상태를 확인
   useEffect(() => {
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(true);
+    setIsLoggedIn(false);
   }, []);
 
   return (
