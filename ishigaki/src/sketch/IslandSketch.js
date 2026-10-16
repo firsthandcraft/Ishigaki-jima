@@ -1,4 +1,4 @@
-import { LIGHT, PLAYER, POI } from '../world/config';
+import { LIGHT, PLAYER, POI, PROPS } from '../world/config';
 import { COAST, latLonToWorld, pullInside } from '../world/geo';
 import { buildTerrain } from '../world/terrain';
 import { buildSea, buildFoam } from '../world/sea';
@@ -7,8 +7,8 @@ import { createFollowCamera } from '../world/camera';
 import { createInput } from '../world/input';
 import { createColliders } from '../world/colliders';
 import { createPlayer } from '../world/player';
-import { buildAirplane, buildSignpost } from '../world/props';
-import { PLACES, nearestPlace, makeIconTexture } from '../world/poi';
+import { buildAirplane, buildSignpost, buildVegetation } from '../world/props';
+import { PLACES, nearestPlace, makeIconTexture, placeById } from '../world/poi';
 import { live, worldStore } from '../world/store';
 import { DEBUG } from '../world/debug';
 
@@ -18,15 +18,19 @@ export function createIslandWorld() {
   const input = createInput({ onRotate: (steps) => camera.rotate(steps) });
 
   const sketch = (p) => {
-    let terrain, sea, foam, shaders, player, airplane, signpost;
+    let terrain, sea, foam, shaders, player, airplane, signpost, vegetation;
     const colliders = createColliders();
     const camTarget = { x: 0, h: 0, z: 0 };
     const signs = []; // { place, h, texture, bounce }
 
-    const startPos = () => {
+    const airportPos = () => {
       const { lat, lon } = PLAYER.START;
       const w = latLonToWorld(lat, lon);
       return pullInside(w.x, w.z, 70);
+    };
+    const startPos = () => {
+      const at = DEBUG.startAt && placeById(DEBUG.startAt);
+      return at ? pullInside(at.x, at.z + 40, 20) : airportPos();
     };
 
     p.setup = () => {
@@ -39,7 +43,8 @@ export function createIslandWorld() {
       shaders = createCurvedShaders(p, camera);
 
       const start = startPos();
-      airplane = { geometry: buildAirplane(p), x: start.x - 30, z: start.z + 34, yaw: 0.5 };
+      const airport = airportPos();
+      airplane = { geometry: buildAirplane(p), x: airport.x - 30, z: airport.z + 34, yaw: 0.5 };
       airplane.h = terrain.groundHeight(airplane.x, airplane.z) + 7;
       colliders.add(airplane.x, airplane.z, 14, 'airplane');
 
@@ -51,8 +56,17 @@ export function createIslandWorld() {
         colliders.add(place.x, place.z, 2.5, 'sign');
       }
 
+      vegetation = buildVegetation(p, {
+        groundHeight: terrain.groundHeight,
+        colliders,
+        avoid: [
+          { x: airport.x, z: airport.z, r: PROPS.CLEAR_START },
+          ...PLACES.map(pl => ({ x: pl.x, z: pl.z, r: PROPS.CLEAR_POI })),
+        ],
+      });
+
       player = createPlayer({ start, groundHeight: terrain.groundHeight, colliders });
-      if (DEBUG.fps) console.info(`world built in ${Math.round(performance.now() - t0)}ms, terrain ${terrain.triangles} tris`);
+      if (DEBUG.fps) console.info(`world built in ${Math.round(performance.now() - t0)}ms, terrain ${terrain.triangles} tris, ${vegetation.count} props`);
 
       camera.snapTo(start.x, player.state.h + PLAYER.CAMERA_LOOK_H, start.z);
       worldStore.set({ ready: true });
@@ -152,6 +166,7 @@ export function createIslandWorld() {
       p.rotateY(airplane.yaw);
       p.model(airplane.geometry);
       p.pop();
+      p.model(vegetation.geometry);
 
       player.draw(p, worldStore.get().character, time);
       drawSigns(dt, time);

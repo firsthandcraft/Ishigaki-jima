@@ -16,6 +16,8 @@ const BODY = {
 const HEAD_Y = BODY.hipY - 0.6 - BODY.bodyH - BODY.headR * 0.9;
 export const CHARACTER_HEIGHT = -HEAD_Y + BODY.headR; // 약 22 (scale 전)
 
+const ctx = { ...BODY, skinColor: '' }; // 파츠에 넘기는 치수 (매 프레임 새로 만들지 않게 재사용)
+
 const call = (style, anchor, p, opts, ctx) => {
   const fn = typeof style === 'function' ? style : style?.[anchor];
   if (fn) {
@@ -27,7 +29,7 @@ const call = (style, anchor, p, opts, ctx) => {
 
 // anim: { phase (걸음 위상), move (0=정지 ~ 1=걷기, 1.8=달리기), time (초) }
 export function drawCharacter(p, cfg, anim) {
-  const ctx = { ...BODY, skinColor: cfg.skinColor };
+  ctx.skinColor = cfg.skinColor;
   const style = (part) => resolveStyle(part, cfg[part].style);
   const move = Math.min(anim.move, 1);
   const swing = Math.sin(anim.phase) * 0.65 * move;

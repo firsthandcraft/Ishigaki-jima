@@ -16,7 +16,7 @@ function baseHeight(sd) {
 }
 
 // 산 가우시안 합 → 계단식으로 깎기 (동물의 숲 언덕 느낌)
-function mountainHeight(x, z, sd) {
+export function mountainHeight(x, z, sd) {
   if (sd <= 0) return 0;
   let m = 0;
   for (const mt of MOUNTAINS) {

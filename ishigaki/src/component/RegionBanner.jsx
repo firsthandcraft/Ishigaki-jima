@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWorldStore } from '../world/store';
 import { placeById } from '../world/poi';
 
@@ -15,7 +15,8 @@ function RegionBanner() {
   const introUntil = useRef(0);
   const queued = useRef(null);
 
-  const show = (title, sub) => {
+  // ref와 setState만 쓰므로 한 번 만든 함수를 계속 쓴다
+  const show = useCallback((title, sub) => {
     clearTimeout(timer.current);
     setBanner({ title, sub, key: Date.now() });
     timer.current = setTimeout(() => {
@@ -24,7 +25,7 @@ function RegionBanner() {
       queued.current = null;
       if (next) show(next.title, next.sub);
     }, SHOW_MS);
-  };
+  }, []);
 
   useEffect(() => {
     if (ready && !introShown) {
@@ -32,7 +33,7 @@ function RegionBanner() {
       introUntil.current = Date.now() + SHOW_MS;
       show('Ishigaki Island', '石垣島');
     }
-  }, [ready]);
+  }, [ready, show]);
 
   useEffect(() => {
     const place = placeById(nearPlaceId);
@@ -40,7 +41,7 @@ function RegionBanner() {
     const next = { title: place.name, sub: place.ja };
     if (Date.now() < introUntil.current) queued.current = next;
     else show(next.title, next.sub);
-  }, [nearPlaceId]);
+  }, [nearPlaceId, show]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 

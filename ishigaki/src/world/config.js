@@ -110,3 +110,24 @@ export const POI = {
   RING: '#F2A65A',         // 표지판 테두리
   WOOD: '#A8774E',         // 기둥
 };
+
+// 소품 배치 (시드 고정이라 새로고침해도 같은 자리)
+export const PROPS = {
+  SEED: 2408,
+  PALMS: 170,              // 해변 근처 야자수
+  TREES: 340,              // 내륙 둥근 활엽수 (산에선 더 빽빽하게)
+  FLOWERS: 130,            // 꽃 무리
+  ROCKS: 60,
+  CLEAR_POI: 34,           // 장소 표지판 주변 비우기
+  CLEAR_ROAD: 12,          // 도로 양옆 비우기
+  CLEAR_START: 70,         // 시작 지점(공항) 주변 비우기
+  colors: {
+    palmTrunk: '#B98A5E',
+    palmLeaf: ['#4FA84A', '#5DBB55', '#46993F'],
+    coconut: '#7A5230',
+    trunk: '#9B6B43',
+    leaf: ['#4E9F43', '#5FB04F', '#6CBC58', '#3F8F3A'],
+    flower: ['#FF8FAB', '#FFD95A', '#FFFFFF', '#B98BFF', '#FF9F68'],
+    rock: ['#A9A39A', '#B8B2A7', '#9A948A'],
+  },
+};
