@@ -1,10 +1,9 @@
-import { TERRAIN, COLORS } from './config';
+import { TERRAIN } from './config';
 import { COAST_BOUNDS, latLonToWorld, signedDistance } from './geo';
-import { makeGeometry, hexToRgb01, smoothstep, hash2 } from './mesh';
+import { makeGeometry, smoothstep } from './mesh';
 
 const T = TERRAIN;
 const MOUNTAINS = T.MOUNTAINS.map(m => ({ ...m, ...latLonToWorld(m.lat, m.lon) }));
-const TIER1_TOP = T.BEACH_H1 + T.TIER1_H;
 
 // 산을 뺀 기본 계단 높이: 해변 → 잔디 1층 → 언덕 2층
 function baseHeight(sd) {
@@ -37,25 +36,11 @@ export function heightAt(x, z, sd = signedDistance(x, z)) {
   return baseHeight(sd) + mountainHeight(x, z, sd);
 }
 
-const C = Object.fromEntries(Object.entries(COLORS)
-  .filter(([, v]) => typeof v === 'string')
-  .map(([k, v]) => [k, hexToRgb01(v)]));
+// 정점색에 지형 정보를 담아 보내고, 실제 색은 픽셀 셰이더(curvedShader.js의 terrain)에서 정한다.
+// → 층·도로 경계가 격자 톱니 없이 매끈한 곡선이 된다.
+//   r = 해안까지 거리(sd), g = 산 높이(m), b = 평평한 정도(노멀 수직 성분)
+export const TERRAIN_ENCODE = { SD_MIN: -40, SD_RANGE: 640, M_RANGE: 220 };
 
-function faceColor(hc, sdc, flatness) {
-  const base = baseHeight(sdc);
-  const m = hc - base;
-  if (hc < 0.6) return C.sandWet;
-  if (flatness < T.CLIFF_SLOPE && hc > T.BEACH_H1 + 1 && m < 1) return C.cliff; // 층 사이 절벽만 (산 계단은 초록 단계로)
-  if (sdc < T.BEACH_WIDTH - 2) return C.sand;
-  if (Math.abs(sdc - T.ROAD_INSET) < T.ROAD_WIDTH / 2 && m < 2) return C.road;
-  if (m > T.MOUNTAIN_STEP * 4.5) return C.mountainTop;
-  if (m > T.MOUNTAIN_STEP * 1.5) return C.mountain;
-  if (hc < TIER1_TOP + T.TIER2_H * 0.5) return C.grass1;
-  return C.grass2;
-}
-
-// 섬 격자 높이맵을 만들고 메시를 한 번 빌드한다.
-// 반환: { geometry, groundHeight(x,z) } — groundHeight는 메시 삼각형과 똑같이 보간해서 발이 땅에 딱 붙는다.
 export function buildTerrain(p) {
   const S = T.GRID_STEP;
   const pad = S * 3;
@@ -85,39 +70,36 @@ export function buildTerrain(p) {
     return [-dx / len, -1 / len, -dz / len];
   };
 
-  const positions = [], normals = [], colors = [];
-  const pushTri = (a, b, c) => {
-    const tri = [a, b, c];
-    const xs = tri.map(([i]) => x0 + i * S);
-    const zs = tri.map(([, j]) => z0 + j * S);
-    const hs = tri.map(([i, j]) => H[idx(i, j)]);
-    const hc = (hs[0] + hs[1] + hs[2]) / 3;
-    const sdc = tri.reduce((s, [i, j]) => s + SD[idx(i, j)], 0) / 3;
-    // 면 노멀의 수직 성분 → 가파른 정도
-    const ux = xs[1] - xs[0], uy = hs[1] - hs[0], uz = zs[1] - zs[0];
-    const vx = xs[2] - xs[0], vy = hs[2] - hs[0], vz = zs[2] - zs[0];
-    const cx = uy * vz - uz * vy, cy = uz * vx - ux * vz, cz = ux * vy - uy * vx;
-    const flatness = Math.abs(cy) / (Math.hypot(cx, cy, cz) || 1);
-    const col = faceColor(hc, sdc, flatness);
-    const jitter = 0.97 + hash2((xs[0] + xs[1] + xs[2]) / 3, (zs[0] + zs[1] + zs[2]) / 3) * 0.06;
-    for (let k = 0; k < 3; k++) {
-      positions.push(xs[k], -hs[k], zs[k]);
-      normals.push(...vNormal(tri[k][0], tri[k][1]));
-      colors.push(col[0] * jitter, col[1] * jitter, col[2] * jitter, 1);
-    }
-  };
-
+  const E = TERRAIN_ENCODE;
+  const positions = [], normals = [], colors = [], faces = [];
+  const vertexOf = new Int32Array(nx * nz).fill(-1);
   const nearIsland = -S * 1.5;
+  const addVertex = (i, j) => {
+    const k = idx(i, j);
+    if (vertexOf[k] >= 0) return vertexOf[k];
+    const x = x0 + i * S, z = z0 + j * S, sd = SD[k], h = H[k];
+    const n = vNormal(i, j);
+    positions.push(x, -h, z);
+    normals.push(...n);
+    colors.push(
+      Math.min(1, Math.max(0, (sd - E.SD_MIN) / E.SD_RANGE)),
+      Math.min(1, Math.max(0, (h - baseHeight(sd)) / E.M_RANGE)),
+      -n[1],
+      1,
+    );
+    vertexOf[k] = positions.length / 3 - 1;
+    return vertexOf[k];
+  };
   for (let j = 0; j < nz - 1; j++) {
     for (let i = 0; i < nx - 1; i++) {
       const maxSd = Math.max(SD[idx(i, j)], SD[idx(i + 1, j)], SD[idx(i, j + 1)], SD[idx(i + 1, j + 1)]);
       if (maxSd < nearIsland) continue; // 섬과 먼 바닷속 칸은 생략
-      pushTri([i, j], [i + 1, j + 1], [i + 1, j]);
-      pushTri([i, j], [i, j + 1], [i + 1, j + 1]);
+      const a = addVertex(i, j), b = addVertex(i + 1, j), c = addVertex(i, j + 1), d = addVertex(i + 1, j + 1);
+      faces.push([a, d, b], [a, c, d]); // groundHeight와 같은 대각선 분할
     }
   }
 
-  const geometry = makeGeometry(p, { positions, normals, colors });
+  const geometry = makeGeometry(p, { positions, normals, colors, faces });
 
   function groundHeight(x, z) {
     const gx = (x - x0) / S, gz = (z - z0) / S;
@@ -125,11 +107,11 @@ export function buildTerrain(p) {
     const j = Math.min(nz - 2, Math.max(0, Math.floor(gz)));
     const fx = Math.min(1, Math.max(0, gx - i)), fz = Math.min(1, Math.max(0, gz - j));
     const h00 = H[idx(i, j)], h10 = H[idx(i + 1, j)], h01 = H[idx(i, j + 1)], h11 = H[idx(i + 1, j + 1)];
-    // pushTri와 같은 대각선 분할
+    // 메시 faces와 같은 대각선 분할
     return fx >= fz
       ? h00 + fx * (h10 - h00) + fz * (h11 - h10)
       : h00 + fz * (h01 - h00) + fx * (h11 - h01);
   }
 
-  return { geometry, groundHeight, triangles: positions.length / 9 };
+  return { geometry, groundHeight, triangles: faces.length };
 }

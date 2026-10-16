@@ -14,10 +14,10 @@ export const TERRAIN = {
   BEACH_H0: 1.2,           // 해안선 높이
   BEACH_H1: 3.5,           // 해변 끝 높이
   TIER1_H: 12,             // 잔디 1층 높이 (해변 위로 더해짐)
-  TIER1_RAMP: 7,           // 층 사이 경사 폭 (작을수록 절벽 느낌)
+  TIER1_RAMP: 9,           // 층 사이 경사 폭 (작을수록 절벽 느낌, 격자 간격보다 작으면 톱니가 생김)
   TIER2_AT: 170,           // 해안에서 이만큼 안쪽부터 언덕 2층
   TIER2_H: 14,
-  TIER2_RAMP: 9,
+  TIER2_RAMP: 10,
   MOUNTAIN_STEP: 13,       // 산을 계단식으로 깎는 단 높이 (0이면 매끈한 산)
   CLIFF_SLOPE: 0.62,       // 이 값보다 노멀이 눕혀진(가파른) 면은 흙 절벽 색
   ROAD_INSET: 66,          // 섬 일주 도로: 해안선에서 이만큼 안쪽
@@ -72,4 +72,8 @@ export const CAMERA = {
   ROTATE_STEP: 45,         // Q/E 회전 단위(도)
   NEAR: 2,
   FAR: 6000,
+};
+
+export const PLAYER = {
+  START: { lat: 24.3967, lon: 124.2400 }, // 이시가키 공항 근처 (동물의 숲 비행장처럼 여기서 시작)
 };

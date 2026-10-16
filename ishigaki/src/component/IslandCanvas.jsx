@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
-import { createIslandSketch } from '../sketch/IslandSketch';
+import { createIslandWorld } from '../sketch/IslandSketch';
 
 p5.disableFriendlyErrors = true; // 매 프레임 파라미터 검사 끄기 (성능)
 
@@ -9,8 +9,12 @@ function IslandCanvas() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const instance = new p5(createIslandSketch(), containerRef.current);
-    return () => instance.remove(); // StrictMode 이중 실행에도 캔버스가 2개 생기지 않게
+    const world = createIslandWorld();
+    const instance = new p5(world.sketch, containerRef.current);
+    return () => { // StrictMode 이중 실행에도 캔버스·키 리스너가 2개 생기지 않게
+      instance.remove();
+      world.dispose();
+    };
   }, []);
 
   return <div ref={containerRef} className="islandCanvas" />;
