@@ -6,7 +6,6 @@ import P5Sketch from './P5Sketch';
 import Navigation from './Navigation';
 import Title from './Title';
 import TripRecord from './TripRecord';
-import Login from './Login';
 import RegisterTripRecord from './RegisterTripRecord';
 
 
