@@ -66,7 +66,7 @@ export const CAMERA = {
   CURVE_START: 120,        // 카메라 앞 이 거리부터 휘기 시작
   CURVE_SIDE: 0.25,        // 좌우로 휘는 비율 (0이면 통나무, 1이면 공)
   CAM_PITCH: 36,           // 내려다보는 각도(도)
-  CAM_DIST: 230,           // 캐릭터까지 거리
+  CAM_DIST: 160,           // 캐릭터까지 거리
   FOV: 50,
   FOLLOW_LERP: 0.08,       // 추적 부드러움 (60fps 기준 프레임당 비율)
   ROTATE_STEP: 45,         // Q/E 회전 단위(도)
@@ -76,4 +76,23 @@ export const CAMERA = {
 
 export const PLAYER = {
   START: { lat: 24.3967, lon: 124.2400 }, // 이시가키 공항 근처 (동물의 숲 비행장처럼 여기서 시작)
+  SCALE: 1.0,              // 캐릭터 크기 (1 = 약 22 단위 키)
+  RADIUS: 4,               // 충돌 반경
+  WALK_SPEED: 20,          // 단위/초. 남쪽 시내 → 북쪽 곶 약 2분
+  RUN_MULT: 1.8,           // Shift 달리기 배율
+  ACCEL: 9,                // 가속 (클수록 즉각 반응)
+  DECEL: 7,                // 감속 (작을수록 미끄러지듯 멈춤)
+  TURN_SPEED: 12,          // 몸 돌리는 속도
+  STRIDE: 0.42,            // 이동 거리당 걸음 위상 증가량
+  COAST_MARGIN: 6,         // 해안선에서 이 거리 안쪽까지만 걸을 수 있음
+  CAMERA_LOOK_H: 9,        // 카메라가 바라보는 높이 (캐릭터 가슴쯤)
+};
+
+export const DUST = {
+  MAX: 48,
+  INTERVAL: 0.09,          // 걸을 때 먼지 생성 간격(초), 달리면 더 자주
+  LIFE: 0.55,
+  SIZE: 1.6,
+  grass: '#C7E59A',        // 잔디 위 연두
+  sand: '#EADBB0',         // 모래 위 베이지
 };

@@ -1,4 +1,5 @@
 import { live } from './store';
+import { DEBUG } from './debug';
 
 // 키보드(WASD/방향키, Shift 달리기, Q/E 카메라 회전) + 가상 조이스틱 입력.
 // 폼에 글자를 입력하는 중에는 캐릭터가 움직이지 않게 input/textarea 이벤트는 무시한다.
@@ -42,13 +43,15 @@ export function createInput({ onRotate }) {
   function read() {
     let x = (held.right ? 1 : 0) - (held.left ? 1 : 0);
     let y = (held.up ? 1 : 0) - (held.down ? 1 : 0);
+    let run = held.run;
     if (x === 0 && y === 0) {
       x = live.joystick.x;
       y = live.joystick.y;
     }
+    if (DEBUG.autoMove) ({ x, y, run } = DEBUG.autoMove);
     const len = Math.hypot(x, y);
     if (len > 1) { x /= len; y /= len; }
-    out.x = x; out.y = y; out.run = held.run;
+    out.x = x; out.y = y; out.run = run;
     return out;
   }
 

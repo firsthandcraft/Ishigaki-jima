@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { defaultCharacter } from '../character/characterConfig';
 
 // 스케치 ↔ React 공유 상태.
 // - worldStore: React가 구독하는 상태 (값이 바뀔 때만 set → 리렌더)
@@ -26,6 +27,7 @@ export const worldStore = createStore({
   nearPlaceId: null,     // 플레이어가 반경 안에 들어간 장소
   visited: [],           // 한 번이라도 들른 장소 id
   fps: 0,
+  character: defaultCharacter, // 캐릭터 외형. 꾸미기 화면이 생기면 이 값만 바꾸면 된다
 });
 
 export const live = {

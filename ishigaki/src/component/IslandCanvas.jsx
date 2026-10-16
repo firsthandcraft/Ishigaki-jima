@@ -9,11 +9,18 @@ function IslandCanvas() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const world = createIslandWorld();
-    const instance = new p5(world.sketch, containerRef.current);
-    return () => { // StrictMode 이중 실행에도 캔버스·키 리스너가 2개 생기지 않게
-      instance.remove();
-      world.dispose();
+    let world = null;
+    let instance = null;
+    // p5 2.x는 setup이 비동기라 setup 전에 remove()하면 인스턴스가 살아남는다.
+    // StrictMode의 마운트→정리→마운트에서 첫 번째는 만들기 전에 취소되도록 한 틱 미룬다.
+    const timer = setTimeout(() => {
+      world = createIslandWorld();
+      instance = new p5(world.sketch, containerRef.current);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      instance?.remove();
+      world?.dispose();
     };
   }, []);
 

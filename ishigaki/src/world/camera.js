@@ -1,5 +1,6 @@
 import { CAMERA } from './config';
 import { COAST_BOUNDS } from './geo';
+import { DEBUG } from './debug';
 
 const DEG = Math.PI / 180;
 
@@ -36,8 +37,9 @@ export function createFollowCamera() {
     cam.rightZ = cam.fwdX;
 
     const pitch = CAMERA.CAM_PITCH * DEG;
-    const back = CAMERA.CAM_DIST * Math.cos(pitch);
-    const up = CAMERA.CAM_DIST * Math.sin(pitch);
+    const dist = DEBUG.camDist || CAMERA.CAM_DIST;
+    const back = dist * Math.cos(pitch);
+    const up = dist * Math.sin(pitch);
     cam.eyeX = cam.focusX - cam.fwdX * back;
     cam.eyeZ = cam.focusZ - cam.fwdZ * back;
     cam.eyeY = -(cam.focusH + up);
