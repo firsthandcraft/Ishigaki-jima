@@ -3,8 +3,7 @@ import '../css/App.css';
 import '../css/world.css';
 
 import IslandCanvas from './IslandCanvas';
-import Navigation from './Navigation';
-import Title from './Title';
+import HUD from './HUD';
 import TripRecord from './TripRecord';
 import RegisterTripRecord from './RegisterTripRecord';
 
@@ -14,9 +13,9 @@ function AppContent() {
   return (
     <div className='baseLine'>
       <IslandCanvas />
-      <Navigation />
+      <HUD />
       <Routes>
-        <Route path="/" element={<Title/>} />
+        <Route path="/" element={null} />
         <Route path="/journal" element={<TripRecord/>} />
         <Route path="/register" element={<RegisterTripRecord />} />
       </Routes>

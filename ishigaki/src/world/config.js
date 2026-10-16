@@ -96,3 +96,17 @@ export const DUST = {
   grass: '#C7E59A',        // 잔디 위 연두
   sand: '#EADBB0',         // 모래 위 베이지
 };
+
+export const POI = {
+  RADIUS: 60,              // 이 거리 안에 들어오면 카드·배너 표시
+  PULL_INSET: 28,          // 섬 밖/해안에 찍힌 장소를 해안에서 이만큼 안쪽으로 끌어당김
+  POLE_H: 14,              // 표지판 기둥 높이
+  BOARD_R: 7,              // 둥근 표지판 반지름
+  BOUNCE: 3,               // 가까이 가면 튀어오르는 높이
+  ICONS: {                 // 표지판 그림 (lighthouse는 이모지가 없어 직접 그림)
+    plane: '✈️', house: '🏠', cave: '🦇', mountain: '⛰️', beach: '🏖️',
+    dive: '🤿', star: '⭐', view: '🔭', lighthouse: null,
+  },
+  RING: '#F2A65A',         // 표지판 테두리
+  WOOD: '#A8774E',         // 기둥
+};

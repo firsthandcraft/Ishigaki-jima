@@ -1,4 +1,24 @@
+import { POI } from './config';
+
 // 장식 소품. 모양은 setup에서 buildGeometry로 한 번만 만들고 draw에선 model()로 그리기만 한다.
+
+// 장소 표지판: 나무 기둥 + 둥근 판. 앞면 아이콘 텍스처는 스케치에서 판 앞에 따로 붙인다. 원점 = 기둥 밑동
+export function buildSignpost(p) {
+  return p.buildGeometry(() => {
+    p.noStroke();
+    p.fill(POI.WOOD);
+    p.push();
+    p.translate(0, -POI.POLE_H / 2, -0.8);
+    p.cylinder(1.1, POI.POLE_H, 8, 1);
+    p.pop();
+    p.fill(POI.RING);
+    p.push();
+    p.translate(0, -POI.POLE_H - POI.BOARD_R * 0.7, 0);
+    p.rotateX(Math.PI / 2);
+    p.cylinder(POI.BOARD_R, 1.4, 24, 1);
+    p.pop();
+  });
+}
 
 // 공항 비행기 (동물의 숲 비행장 느낌). 앞 = +z
 export function buildAirplane(p) {

@@ -26,7 +26,6 @@ export const worldStore = createStore({
   ready: false,          // 월드 메시 빌드 완료
   nearPlaceId: null,     // 플레이어가 반경 안에 들어간 장소
   visited: [],           // 한 번이라도 들른 장소 id
-  fps: 0,
   character: defaultCharacter, // 캐릭터 외형. 꾸미기 화면이 생기면 이 값만 바꾸면 된다
 });
 
@@ -34,6 +33,7 @@ export const live = {
   player: { x: 0, z: 0, yaw: 0 },
   cameraYaw: 0,
   joystick: { x: 0, y: 0 },   // 가상 조이스틱 (-1~1, y+ = 화면 위)
+  fps: 0,
 };
 
 export function useWorldStore(selector) {
