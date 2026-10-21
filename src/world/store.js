@@ -54,6 +54,7 @@ export const live = {
   cameraYaw: 0,
   joystick: { x: 0, y: 0 },   // 가상 조이스틱 (-1~1, y+ = 화면 위)
   fps: 0,
+  buildings: [],              // 섬 건물 { id, name, x, z, size } (world/buildings.js) — 미니맵이 읽는다
   residents: [],              // 섬 주민 상태 { def, x, z, home: { name } ... } (world/residents.js)
   islandPaused: false,        // 꾸미기 화면처럼 섬을 덮는 화면이 떠 있으면 true → 섬 입력·렌더링을 쉰다
 };

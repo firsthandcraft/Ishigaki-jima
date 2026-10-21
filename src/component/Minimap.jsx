@@ -30,6 +30,12 @@ function Minimap() {
     const frame = () => {
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(base, 0, 0, W, H);
+      // 건물: 작은 네모
+      ctx.fillStyle = '#C8784A';
+      for (const b of live.buildings) {
+        const [x, y] = toMap(b.x, b.z);
+        ctx.fillRect(x - 2.5, y - 2, 5, 4);
+      }
       const { visited, nearPlaceId } = worldStore.get();
       for (const pl of PLACES) {
         const [x, y] = toMap(pl.x, pl.z);

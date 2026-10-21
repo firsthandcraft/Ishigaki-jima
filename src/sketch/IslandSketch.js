@@ -8,6 +8,7 @@ import { createInput } from '../world/input';
 import { createColliders } from '../world/colliders';
 import { createPlayer } from '../world/player';
 import { createResidents } from '../world/residents';
+import { buildBuildings } from '../world/buildings';
 import { createTileGrid } from '../world/grid';
 import { buildGridOverlay } from '../world/gridOverlay';
 import { createTreeRenderer } from '../world/trees';
@@ -40,7 +41,7 @@ export function createIslandWorld() {
   });
 
   const sketch = (p) => {
-    let terrain, sea, foam, shaders, player, residents, airplane, signpost, vegetation, grid, trees, flowers;
+    let terrain, sea, foam, shaders, player, residents, buildings, airplane, signpost, vegetation, grid, trees, flowers;
     let gridOverlay = null, gridOverlayVersion = -1;
     let shadowFb;
     const colliders = createColliders();
@@ -55,6 +56,8 @@ export function createIslandWorld() {
     const startPos = () => {
       const xz = DEBUG.startAt?.match(/^(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/); // ?at=x,z 월드 좌표
       if (xz) return { x: Number(xz[1]), z: Number(xz[2]) };
+      const building = buildings?.list.find(b => b.id === DEBUG.startAt);
+      if (building) return pullInside(building.x, building.z + building.size[1] * GRID.TILE / 2 + 40, 20); // 건물 입구 앞
       const at = DEBUG.startAt && placeById(DEBUG.startAt);
       return at ? pullInside(at.x, at.z + 40, 20) : airportPos();
     };
@@ -73,7 +76,6 @@ export function createIslandWorld() {
         depthFormat: p.FLOAT, textureFiltering: p.NEAREST,
       });
 
-      const start = startPos();
       const airport = airportPos();
       airplane = { geometry: buildAirplane(p), x: airport.x - 30, z: airport.z + 34, yaw: 0.5 };
       airplane.h = terrain.groundHeight(airplane.x, airplane.z) + 7;
@@ -88,18 +90,24 @@ export function createIslandWorld() {
         colliders.add(place.x, place.z, 2.5, 'sign');
       }
 
+      // 건물은 나무·바위보다 먼저 자리를 잡는다 (data/buildings.json 주소 근처의 빈 잔디)
+      buildings = buildBuildings(p, { grid, colliders, groundHeight: terrain.groundHeight });
+      live.buildings = buildings.list;
+
       vegetation = buildVegetation({
         grid,
         colliders,
         avoid: [
           { x: airport.x, z: airport.z, r: PROPS.CLEAR_START },
           ...PLACES.map(pl => ({ x: pl.x, z: pl.z, r: PROPS.CLEAR_POI })),
+          ...buildings.avoid,
         ],
       });
 
       trees = createTreeRenderer(p, { trees: vegetation.trees, groundHeight: terrain.groundHeight });
       flowers = createFlowerRenderer(p, { flowers: vegetation.flowers, groundHeight: terrain.groundHeight });
 
+      const start = startPos(); // 건물이 놓인 뒤에 (?at=건물id 를 쓰려고)
       player = createPlayer({ start, groundHeight: terrain.groundHeight, colliders });
       // 주민들의 집: 공항(시작 지점) 근처에 먼저 몇 명, 나머지는 여행 장소마다
       residents = createResidents({
@@ -162,6 +170,7 @@ export function createIslandWorld() {
       p.rotateY(airplane.yaw);
       p.model(airplane.geometry);
       p.pop();
+      buildings.draw(p);
       p.shader(shaders.tree);
       trees.draw(shaders.tree);
       p.shader(shaders.flower);

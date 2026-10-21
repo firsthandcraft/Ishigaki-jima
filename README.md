@@ -73,6 +73,7 @@ p.push()는 현재 변환 상태(위치, 회전, 크기 등)를 스택에 저장
 - 크기·속도·색상·카메라 값: `src/world/config.js`
 - 캐릭터 꾸미기: 상단 얼굴 아이콘(`/character`, 예전 `/journal`은 여기로 이동). 선택지·색 팔레트는 `src/character/customize.js`, "결정"하면 브라우저에 기억된다
 - 캐릭터 외형 파츠: `src/character/parts/*.js` (새 머리·옷 = 스타일 함수 하나)
+- 섬 건물: `src/data/buildings.json` (이름·주소·좌표·타일 크기, 좌표는 주소 동네 기준 대략값), 모양은 `src/world/buildings.js`. 좌표 근처의 빈 잔디 타일에 자동으로 놓이고 나무보다 먼저 자리를 잡는다
 - 섬 주민: `src/character/residents.js` (명단·생김새·인사말), 동물 종 파츠 `src/character/species.js`, 덩어리 주민 `src/character/blob.js`. 집 주변을 산책하는 방식(속도·반경·쉬는 시간)은 `src/world/config.js` 의 `RESIDENTS_AI`, 가까이 가면 멈춰서 인사한다
 - 해안선 다시 만들기: `node scripts/buildCoastline.mjs <overpass.json>` (데이터 © OpenStreetMap contributors)
 
@@ -85,7 +86,7 @@ p.push()는 현재 변환 상태(위치, 회전, 크기 등)를 스택에 저장
 | `?debug=grid` | 타일 그리드 오버레이 켠 채로 시작 (`G` 로 토글) |
 | `?fps=1` | FPS 표시, 콘솔에서 `__islandLive` 로 위치 확인 |
 | `?char=wavy` | 이 캐릭터로 시작 (`src/character/presets.js` 의 id, 꾸민 캐릭터보다 우선) |
-| `?at=kabira` | 해당 장소 근처에서 시작 (`?at=120,-340` 처럼 월드 좌표도 가능) |
+| `?at=kabira` | 해당 장소 근처에서 시작 (`?at=donki` 처럼 건물 id, `?at=120,-340` 처럼 월드 좌표도 가능) |
 | `?cam=60` | 카메라 거리 덮어쓰기 |
 | `/character?resident=kappi` | 꾸미기 화면 미리보기에 이 주민을 그림 (주민 모델 확인용) |
 | `/character?yaw=0` | 미리보기 각도 고정 (0 정면, 45, 90 측면) |

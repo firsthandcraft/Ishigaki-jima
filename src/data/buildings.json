@@ -1,0 +1,8 @@
+[
+  { "id": "airport",    "name": "이시가키 공항",                  "label": "ISHIGAKI AIRPORT", "address": "石垣空港 (공항 표지판 옆)", "near": "airport", "offset": [70, -70], "size": [6, 3] },
+  { "id": "donki",      "name": "돈키",                           "label": "DONKI",            "address": "462-1 Ohama, Ishigaki, Okinawa 907-0001",          "lat": 24.3437, "lon": 124.1880, "size": [4, 3] },
+  { "id": "painushima", "name": "파이누시마 리조트 코랄 피시",      "label": "Coral Fish",       "address": "366 Ibaruma, Ishigaki, Okinawa 907-0332",          "lat": 24.5070, "lon": 124.2800, "size": [2, 2] },
+  { "id": "nesthotel",  "name": "네스트 호텔 이시가키 마에자토 비치", "label": "Nest hotel",       "address": "345-4 Maezato, Ishigaki, Okinawa 907-0002",        "lat": 24.3540, "lon": 124.1990, "size": [3, 3] },
+  { "id": "toyokoinn",  "name": "토요코인 오키나와 이시가키지마",     "label": "TOYOKO INN",       "address": "3 Chome-2-12 Hamasakicho, Ishigaki, Okinawa 907-0013", "lat": 24.3368, "lon": 124.1545, "size": [3, 2] },
+  { "id": "rich",       "name": "리치 리존",                       "label": "Rich Reson",       "address": "474-1 Fukai, Ishigaki, Okinawa 907-0451",          "lat": 24.4680, "lon": 124.2360, "size": [3, 2] }
+]

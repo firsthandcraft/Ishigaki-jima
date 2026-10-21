@@ -22,8 +22,8 @@ export const FOOTPRINT = {
   rock: [1, 1],
   house: [2, 2],
 };
-// 집 입구는 남쪽(+z, 기본 카메라 쪽). 앵커 기준 이 칸을 비워 둔다
-const HOUSE_ENTRANCE = [0, 2];
+// 집·건물 입구는 남쪽(+z, 기본 카메라 쪽). 앞면 가운데 바로 앞 칸을 비워 둔다
+// (건물은 크기가 제각각이라 placeObject의 extra.size = [가로, 세로]로 footprint를 준다)
 const NEIGHBORS8 = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 const S = GRID.TILE;
@@ -90,18 +90,18 @@ export function createTileGrid() {
   };
   const set = (tx, tz, type) => { cells[index(tx, tz)] = CODE[type]; };
 
-  // type을 (tx, tz)에 놓을 때 차지하는 타일들 (+ 집이면 입구 예약 칸)
-  function footprintOf(type, tx, tz) {
-    const [fw, fh] = FOOTPRINT[type];
+  // type을 (tx, tz)에 놓을 때 차지하는 타일들 (+ 집이면 입구 예약 칸). size: footprint 덮어쓰기
+  function footprintOf(type, tx, tz, size = FOOTPRINT[type]) {
+    const [fw, fh] = size;
     const tiles = [];
     for (let dz = 0; dz < fh; dz++) for (let dx = 0; dx < fw; dx++) tiles.push([tx + dx, tz + dz]);
-    const entrance = type === 'house' ? [tx + HOUSE_ENTRANCE[0], tz + HOUSE_ENTRANCE[1]] : null;
+    const entrance = type === 'house' ? [tx + Math.floor((fw - 1) / 2), tz + fh] : null;
     return { tiles, entrance };
   }
 
-  function canPlace(type, tx, tz) {
-    if (!FOOTPRINT[type]) return false;
-    const { tiles, entrance } = footprintOf(type, tx, tz);
+  function canPlace(type, tx, tz, size = FOOTPRINT[type]) {
+    if (!size) return false;
+    const { tiles, entrance } = footprintOf(type, tx, tz, size);
     // 겹침, 모래·물·길·절벽 위, 예약 칸 → 실패. 잔디(empty)에만 놓인다
     if (!tiles.every(([x, z]) => get(x, z) === 'empty')) return false;
     if (entrance && get(...entrance) !== 'empty') return false;
@@ -117,11 +117,12 @@ export function createTileGrid() {
     get, canPlace,
     // 성공하면 { type, tx, tz, x, z, ...extra } (x, z = footprint 중앙 월드 좌표), 실패하면 null
     placeObject(type, tx, tz, extra = {}) {
-      if (!canPlace(type, tx, tz)) return null;
-      const { tiles, entrance } = footprintOf(type, tx, tz);
+      const size = extra.size ?? FOOTPRINT[type];
+      if (!canPlace(type, tx, tz, size)) return null;
+      const { tiles, entrance } = footprintOf(type, tx, tz, size);
       for (const [x, z] of tiles) set(x, z, type);
       if (entrance) set(...entrance, 'reserved');
-      const [fw, fh] = FOOTPRINT[type];
+      const [fw, fh] = size;
       const obj = { ...extra, type, tx, tz, x: (tx + fw / 2) * S, z: (tz + fh / 2) * S };
       objects.push(obj);
       grid.version++;

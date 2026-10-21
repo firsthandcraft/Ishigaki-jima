@@ -8,7 +8,7 @@
 //   ?char=wavy      이 캐릭터로 시작 (character/presets.js 의 id, 꾸며서 저장한 캐릭터보다 우선)
 //   ?resident=kappi 꾸미기 화면 미리보기에 이 주민을 그림 (character/residents.js 의 id) — 주민 모델 확인용
 //   ?yaw=45         꾸미기 화면 미리보기를 이 각도(도)로 고정 (0 정면, 45, 90 측면) — 모델 확인용
-//   ?at=kabira      places.json의 장소 근처에서 시작 (?at=x,z 면 그 월드 좌표에서)
+//   ?at=kabira      places.json의 장소(또는 buildings.json의 건물) 근처에서 시작 (?at=x,z 면 그 월드 좌표에서)
 const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
 const debugModes = (params.get('debug') || '').split(',');
 
