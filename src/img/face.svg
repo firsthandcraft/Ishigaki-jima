@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- 상단 메뉴 아이콘: 캐릭터 꾸미기 (다른 아이콘처럼 말랑한 입체 느낌) -->
+  <defs>
+    <radialGradient id="skin" cx="0.38" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#FFE9D6"/>
+      <stop offset="0.65" stop-color="#F7C9A4"/>
+      <stop offset="1" stop-color="#E4A57C"/>
+    </radialGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8A5A3A"/>
+      <stop offset="1" stop-color="#5E3A24"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="60" cy="110" rx="34" ry="6" fill="#000" opacity="0.12"/>
+  <circle cx="60" cy="62" r="42" fill="url(#skin)"/>
+  <path d="M18 60C16 30 36 14 60 14S104 30 102 60C96 48 86 40 74 38C66 46 46 48 32 44C26 48 21 54 18 60Z" fill="url(#hair)"/>
+  <path d="M40 24C50 18 66 17 76 22" stroke="#B07A55" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <ellipse cx="45" cy="64" rx="5.5" ry="7.5" fill="#3A2A24"/>
+  <ellipse cx="75" cy="64" rx="5.5" ry="7.5" fill="#3A2A24"/>
+  <circle cx="47" cy="61" r="2" fill="#fff"/>
+  <circle cx="77" cy="61" r="2" fill="#fff"/>
+  <ellipse cx="36" cy="77" rx="7" ry="4.5" fill="#F59A9A" opacity="0.6"/>
+  <ellipse cx="84" cy="77" rx="7" ry="4.5" fill="#F59A9A" opacity="0.6"/>
+  <path d="M52 80Q60 88 68 80" stroke="#A5523F" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>

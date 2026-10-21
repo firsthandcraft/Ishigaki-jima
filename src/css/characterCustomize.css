@@ -1,0 +1,296 @@
+/* 캐릭터 꾸미기 화면 (/character) — 동물의 숲 옷장 화면 느낌 (docs/player/1792552489795_image.png) */
+.characterCustomize {
+  --cc-cream: #FBF5D9;
+  --cc-yellow: #F2C94C;
+  --cc-yellow-dark: #D9A92A;
+  --cc-mint: #4DBFB0;
+  --cc-mint-dark: #38998C;
+  --cc-brown: #6B4F3A;
+  --cc-brown-soft: #9C7E62;
+  --cc-card: #FFFDF2;
+  position: fixed;
+  inset: 0;
+  z-index: 1100; /* 상단 아이콘(nav)까지 덮는 전체 화면 */
+  display: flex;
+  background-color: var(--cc-cream);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='%23F7EDBA' stroke='%23F7EDBA' stroke-width='7' stroke-linejoin='round'%3E%3Cpath d='M28 19L40 39L16 39Z' transform='rotate(-14 28 30)'/%3E%3Cpath d='M96 7L108 27L84 27Z' transform='rotate(20 96 18)'/%3E%3Cpath d='M150 41L162 61L138 61Z' transform='rotate(-6 150 52)'/%3E%3Cpath d='M60 81L72 101L48 101Z' transform='rotate(12 60 92)'/%3E%3Cpath d='M122 101L134 121L110 121Z' transform='rotate(-22 122 112)'/%3E%3Cpath d='M20 129L32 149L8 149Z' transform='rotate(8 20 140)'/%3E%3Cpath d='M92 149L104 169L80 169Z' transform='rotate(-10 92 160)'/%3E%3Cpath d='M160 139L172 159L148 159Z' transform='rotate(16 160 150)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  color: var(--cc-brown);
+  font-family: 'Jua', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  overflow: hidden;
+  animation: ccIn 0.3s ease;
+}
+@keyframes ccIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* 버튼 기본값 — :where로 우선순위를 낮춰서 아래 클래스들이 그대로 덮어쓰게 */
+:where(.characterCustomize) button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+:where(.characterCustomize) button:active { transform: scale(0.95); }
+:where(.characterCustomize) button:focus-visible { outline: 3px solid var(--cc-mint); outline-offset: 3px; }
+
+/* 왼쪽: 캐릭터 */
+.ccStage {
+  position: relative;
+  flex: 0 0 45%;
+  min-width: 0;
+}
+.characterPreview {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none; /* 드래그 회전이 스크롤로 먹히지 않게 */
+}
+.characterPreview:active { cursor: grabbing; }
+.characterPreview canvas { display: block; }
+.ccDragHint {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  margin: 0;
+  transform: translateX(-50%);
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 253, 242, 0.8);
+  color: var(--cc-brown-soft);
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* 오른쪽: 편집 패널 */
+.ccPanel {
+  flex: 1 1 55%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 56px 32px 32px;
+  overflow-y: auto;
+}
+
+/* 탭 바: Q [알약] E */
+.ccTabBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 28px; /* 라벨 말풍선 자리 */
+}
+.ccKey {
+  flex: none;
+  width: 32px;
+  height: 30px;
+  border: 2px solid var(--cc-yellow-dark);
+  border-radius: 9px;
+  background: var(--cc-card);
+  color: var(--cc-yellow-dark);
+  font-size: 16px;
+  line-height: 1;
+  box-shadow: 0 2px 0 var(--cc-yellow-dark);
+}
+.ccTabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--cc-yellow);
+  box-shadow: 0 4px 0 var(--cc-yellow-dark);
+}
+.ccTab {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #FFFFFF;
+}
+.ccTab svg { width: 26px; height: 26px; }
+.ccTab:hover { background: rgba(255, 255, 255, 0.22); }
+.ccTab.isSelected {
+  background: var(--cc-card);
+  color: var(--cc-brown);
+  transform: scale(1.12);
+  box-shadow: 0 3px 0 var(--cc-yellow-dark);
+}
+.ccTab.isSelected:active { transform: scale(1.06); }
+.ccTabLabel {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #F7E08A;
+  color: var(--cc-brown);
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: ccPop 0.2s ease;
+}
+.ccTabLabel::after { /* 말풍선 꼬리 */
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #F7E08A;
+}
+@keyframes ccPop {
+  from { transform: translate(-50%, 4px) scale(0.8); opacity: 0; }
+  to { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+
+/* 얼굴 하위 탭: 눈 / 코 / 입 */
+.ccSubTabs {
+  display: flex;
+  gap: 8px;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(242, 201, 76, 0.25);
+}
+.ccSubTab {
+  min-width: 64px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 16px;
+}
+.ccSubTab.isSelected {
+  background: var(--cc-yellow);
+  color: #FFFFFF;
+  box-shadow: 0 3px 0 var(--cc-yellow-dark);
+}
+
+/* 선택지 그리드 */
+.ccGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 6px;
+}
+.ccOption {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 6px 10px;
+  border: 3px solid transparent;
+  border-radius: 24px;
+  background: var(--cc-card);
+  box-shadow: 0 4px 0 rgba(107, 79, 58, 0.12);
+}
+.ccOption:hover { box-shadow: 0 4px 0 rgba(107, 79, 58, 0.12), 0 0 0 3px rgba(77, 191, 176, 0.25); }
+.ccOption.isSelected { border-color: var(--cc-mint); }
+.ccThumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+.ccThumbLoading {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 201, 76, 0.25) 0 30%, transparent 31%);
+  animation: ccPulse 0.9s ease-in-out infinite alternate;
+}
+@keyframes ccPulse { to { opacity: 0.4; } }
+.ccOptionLabel {
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.ccCheck {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--cc-card);
+  border-radius: 50%;
+  background: var(--cc-mint);
+  color: #FFFFFF;
+  animation: ccPop2 0.22s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+.ccCheck svg { width: 15px; height: 15px; }
+@keyframes ccPop2 { from { transform: scale(0); } }
+
+/* 컬러 블롭 */
+.ccGrid.isSwatches { gap: 10px 18px; }
+.ccSwatch {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+}
+.ccSwatch:hover .ccBlob { transform: scale(1.06) rotate(-3deg); }
+.ccBlob {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 3px 0 rgba(107, 79, 58, 0.12));
+  transition: transform 0.15s ease;
+}
+.ccSwatch .ccCheck { top: -2px; right: 2px; }
+
+/* 결정 / 취소 */
+.ccDecide {
+  flex: none;
+  margin-top: auto;
+  min-width: 200px;
+  padding: 14px 48px;
+  border: none;
+  border-radius: 999px;
+  background: var(--cc-mint);
+  color: #FFFFFF;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  box-shadow: 0 5px 0 var(--cc-mint-dark);
+}
+.ccDecide:hover { background: #5CCABB; }
+.ccCancel {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  padding: 10px 26px;
+  border: 3px solid var(--cc-yellow);
+  border-radius: 999px;
+  background: var(--cc-card);
+  font-size: 17px;
+  box-shadow: 0 4px 0 var(--cc-yellow-dark);
+}
+
+/* 좁은 화면: 위에 캐릭터, 아래에 패널 */
+@media (max-width: 760px) {
+  .characterCustomize { flex-direction: column; }
+  .ccStage { flex: 0 0 36%; }
+  .ccDragHint { display: none; }
+  .ccPanel { gap: 14px; padding: 4px 16px 20px; }
+  .ccTabBar { gap: 6px; }
+  .ccKey { width: 26px; height: 26px; font-size: 13px; }
+  .ccTabs { padding: 4px 6px; gap: 0; }
+  .ccTab { width: 38px; height: 38px; }
+  .ccTab svg { width: 21px; height: 21px; }
+  .ccGrid { gap: 10px; }
+  .ccOption { padding: 6px 3px 8px; border-radius: 18px; }
+  .ccOptionLabel { font-size: 12px; }
+  .ccDecide { margin-top: 8px; min-width: 150px; padding: 11px 36px; font-size: 19px; }
+  .ccCancel { top: 12px; left: 16px; bottom: auto; padding: 6px 16px; font-size: 15px; }
+}

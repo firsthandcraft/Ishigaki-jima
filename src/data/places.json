@@ -1,0 +1,14 @@
+[
+  { "id": "airport",   "name": "이시가키 공항",            "ja": "石垣空港",                   "lat": 24.3967, "lon": 124.2450, "icon": "plane",      "date": "", "photos": [], "memo": "" },
+  { "id": "city",      "name": "이시가키 시내",            "ja": "石垣市",                     "lat": 24.3400, "lon": 124.1560, "icon": "house",      "date": "", "photos": [], "memo": "" },
+  { "id": "limestone", "name": "이시가키지마 종유동굴",     "ja": "石垣島鍾乳洞",               "lat": 24.3560, "lon": 124.1430, "icon": "cave",       "date": "", "photos": [], "memo": "" },
+  { "id": "omoto",     "name": "오모토 산",                "ja": "於茂登岳",                   "lat": 24.4300, "lon": 124.1830, "icon": "mountain",   "date": "", "photos": [], "memo": "" },
+  { "id": "yonehara",  "name": "요네하라 비치",            "ja": "米原ビーチ",                 "lat": 24.4520, "lon": 124.1900, "icon": "beach",      "date": "", "photos": [], "memo": "" },
+  { "id": "kabira",    "name": "카비라 만타 스크램블",      "ja": "川平石崎マンタスクランブル", "lat": 24.4780, "lon": 124.1350, "icon": "dive",       "date": "", "photos": [], "memo": "" },
+  { "id": "ogan",      "name": "우간자키 등대",            "ja": "石垣御神崎灯台",             "lat": 24.4500, "lon": 124.0800, "icon": "lighthouse", "date": "", "photos": [], "memo": "" },
+  { "id": "starfarm",  "name": "이시가키지마 호시조라 팜",  "ja": "石垣島星空ファーム",         "lat": 24.4450, "lon": 124.2550, "icon": "star",       "date": "", "photos": [], "memo": "" },
+  { "id": "tamatori",  "name": "다마토리 곶 전망대",        "ja": "玉取崎展望台",               "lat": 24.4720, "lon": 124.2830, "icon": "view",       "date": "", "photos": [], "memo": "" },
+  { "id": "sabichi",   "name": "사비치 동굴",              "ja": "サビチ鍾乳洞",               "lat": 24.5250, "lon": 124.2950, "icon": "cave",       "date": "", "photos": [], "memo": "" },
+  { "id": "sunset",    "name": "이시가키 선셋 비치",        "ja": "石垣島サンセットビーチ",     "lat": 24.5530, "lon": 124.3050, "icon": "beach",      "date": "", "photos": [], "memo": "" },
+  { "id": "hirakubo",  "name": "히라쿠보 곶",              "ja": "平久保崎",                   "lat": 24.6080, "lon": 124.3150, "icon": "lighthouse", "date": "", "photos": [], "memo": "" }
+]
