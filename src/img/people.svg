@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- 상단 메뉴 아이콘: 섬 주민 (주민 목록의 집 모양 아이콘 + 얼굴) -->
+  <defs>
+    <linearGradient id="house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC15A"/>
+      <stop offset="1" stop-color="#F09A1E"/>
+    </linearGradient>
+    <radialGradient id="face" cx="0.4" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#9BE07A"/>
+      <stop offset="1" stop-color="#4FAE45"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="60" cy="112" rx="34" ry="5" fill="#000" opacity="0.12"/>
+  <path d="M60 8Q64 8 67 11L108 46Q113 51 109 55Q107 57 103 57L103 98Q103 106 95 106L25 106Q17 106 17 98L17 57Q13 57 11 55Q7 51 12 46L53 11Q56 8 60 8Z" fill="url(#house)" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="60" cy="74" r="25" fill="url(#face)"/>
+  <circle cx="52" cy="70" r="3.6" fill="#2A1E1A"/>
+  <circle cx="68" cy="70" r="3.6" fill="#2A1E1A"/>
+  <circle cx="53.2" cy="68.8" r="1.2" fill="#FFFFFF"/>
+  <circle cx="69.2" cy="68.8" r="1.2" fill="#FFFFFF"/>
+  <ellipse cx="60" cy="80" rx="8" ry="3.8" fill="#F2C94C"/>
+  <ellipse cx="46" cy="79" rx="4" ry="2.5" fill="#F59A9A" opacity="0.6"/>
+  <ellipse cx="74" cy="79" rx="4" ry="2.5" fill="#F59A9A" opacity="0.6"/>
+</svg>
